@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mapa 2</title>
+  <meta charset="UTF-8">
+</head>
+<script src="https://github.com/brayangcastro/BC_Ingenieria/blob/d02336e7510edad590f3eae12addc5a954981cff/coordenadas.js"></script >
+<script>
+
+var contX=0;
+var color1= 'rgb(133, 146, 158 )';
+
+document.addEventListener("DOMContentLoaded", init, false);
+var compuertas;
+var comp1, comp2, comp3, comp4, comp5, comp6, comp7;
+var compuertas_sen = [624, 621, 10, 10,0,0,0];
+var xhr = new XMLHttpRequest();
+var url="https://api.thingspeak.com/channels/393200/fields/1.json?api_key=HFR1EUTWGITG3PSH&results=1";
+
+function init()
+{
+    var usuario = getParameterByName('Username');
+	// alert(usuario);   
+    loguin();
+    Dibujar();  
+}
+function getParameterByName(name) 
+{
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function loguin()
+{
+    xhr.open("GET", url, true); 
+    xhr.send('');					 
+}
+
+xhr.onreadystatechange = function () 
+{
+    console.log(xhr.readyState);
+    console.log(xhr.status);
+    console.log(xhr.responseText);
+		  
+	var canvas = document.getElementById('mycanvas');
+	var ctx = canvas.getContext('2d');
+		
+	if (xhr.readyState === 4 && xhr.status === 200) 
+	{
+        console.log("Json Response");
+		var json_data = JSON.parse(xhr.responseText);	//Guardamos la respuesta del servidor en json_data con parse
+		                                            	//esto genera un objeto JSON que podemos leer como objeto.dato.dato
+														//como nos indica la API de strategix4, nos regresa un objeto llamada "data" con los diferentes valores
+		compuertas=json_data.feeds[0].field1;
+		console.log("Datos obtenidos: "+json_data.feeds[0].field1);  //Imprimimos la longitud del Objeto, que es la cantidad de datos recibidos
+	    
+	 
+		for (i=0; i<=7; i++)
+			{
+		compuertas_sen[i]=compuertas.split(",") [i];
+		
+		console.log("Compuerta "+i+": "+compuertas_sen[i]);
+		}
+		 
+		
+		 
+	    Dibujar();
+		 
+	}		
+};
+
+
+function Bodega( ctx,x_co, y_co)
+{
+
+ctx.strokeStyle='black';
+ctx.strokeRect(x_co,y_co,240,656);
+ctx.strokeRect(br1_rect[0],br1_rect[1],br1_rect[2],br1_rect[3]);
+
+}
+
+function Silos_reposo(ctx,x_co,y_co)
+{
+
+var ancho_sr=sco1[2];
+var alto_sr=sco1[3];
+for (i=0; i<=4; i++)
+			{
+			
+					if (compuerta[i]==1)
+					{
+						ctx.fillStyle='green';
+						ctx.fillRect(x_co+(ancho_sr*i),y_co,ancho_sr,alto_sr);
+						 
+					}
+			}
+}
+
+function Dibujar()
+{
+
+var canvas = document.getElementById('mycanvas');
+var ctx = canvas.getContext('2d');
+
+var escala_general= window.innerWidth/1000;
+ctx.scale(escala_general,escala_general);
+
+
+
+
+
+Bodega(ctx,bod[0],bod[1]);
+
+ 
+
+ctx.fillStyle=color1;
+ctx.beginPath();
+ctx.arc(br1[0],br1[1],br1[2],br1[3],br1[4]);
+//Rellenar el círculo
+ctx.fill();
+//Hacer el contorno del círculo
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(br2[0],br2[1],br2[2],br2[3],br2[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(br3[0],br3[1],br3[2],br3[3],br3[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(br4[0],br4[1],br4[2],br4[3],br4[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(br5[0],br5[1],br5[2],br5[3],br5[4]);
+ctx.fill();
+ctx.stroke();
+ctx.arc(br1_1[0],br1_1[1],br1_1[2],br1_1[3],br1_1[4]);
+ctx.beginPath();
+ctx.arc(br1_1[0],br1_1[1],br1_1[2],br1_1[3],br1_1[4]);
+ctx.fill();
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(s1[0],s1[1],s1[2],s1[3],s1[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(s2[0],s2[1],s2[2],s2[3],s2[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(s3[0],s3[1],s3[2],s3[3],s3[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(s4[0],s4[1],s4[2],s4[3],s4[4]);
+ctx.fill();
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(s1_1[0],s1_1[1],s1_1[2],s1_1[3],s1_1[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(s1_2[0],s1_2[1],s1_2[2],s1_2[3],s1_2[4]);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(s2_1[0],s2_1[1],s2_1[2],s2_1[3],s2_1[4]);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(s3_1[0],s3_1[1],s3_1[2],s3_1[3],s3_1[4]);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(proc_s300[0],proc_s300[1],proc_s300[2],proc_s300[3],proc_s300[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(proc_s70[0],proc_s70[1],proc_s70[2],proc_s70[3],proc_s70[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(proc_s20[0],proc_s20[1],proc_s20[2],proc_s20[3],proc_s20[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(smil[0],smil[1],smil[2],smil[3],smil[4]);
+ctx.fill();
+ctx.stroke();
+
+for (i=0; i<=23; i++)
+{
+    ctx.fillRect(ferr1[0]+contX,ferr1[1],ferr1[2],ferr1[3]);
+    ctx.strokeRect(ferr1[0]+contX,ferr1[1],ferr1[2],ferr1[3]);
+	contX=contX+34;
+}
+ctx.fillRect(cam1[0],cam1[1],cam1[2],cam1[3]);
+ctx.strokeRect(cam1[0],cam1[1],cam1[2],cam1[3]);
+ctx.strokeRect(cam1_1[0],cam1_1[1],cam1_1[2],cam1_1[3]);
+ctx.fillRect(cam2[0],cam2[1],cam2[2],cam2[3]);
+ctx.strokeRect(cam2[0],cam2[1],cam2[2],cam2[3]);
+ctx.strokeRect(ramp1[0],ramp1[1],ramp1[2],ramp1[3]);
+ctx.strokeRect(ramp2[0],ramp2[1],ramp2[2],ramp2[3]);
+ctx.strokeRect(c3p[0],c3p[1],c3p[2],c3p[3]);
+ctx.strokeRect(rep[0],rep[1],rep[2],rep[3]);
+
+ctx.fillRect(seca[0],seca[1],seca[2],seca[3]);
+ctx.strokeRect(seca[0],seca[1],seca[2],seca[3]);
+ctx.fillRect(seca1[0],seca1[1],seca1[2],seca1[3]);
+ctx.strokeRect(seca1[0],seca1[1],seca1[2],seca1[3]);
+ctx.fillRect(seca2[0],seca2[1],seca2[2],seca2[3]);
+ctx.strokeRect(seca2[0],seca2[1],seca2[2],seca2[3]);
+ctx.fillRect(seca3[0],seca3[1],seca3[2],seca3[3]);
+ctx.strokeRect(seca3[0],seca3[1],seca3[2],seca3[3]);
+ctx.fillRect(seca4[0],seca4[1],seca4[2],seca4[3]);
+ctx.strokeRect(seca4[0],seca4[1],seca4[2],seca4[3]);
+
+ctx.fillStyle='white';
+ctx.beginPath();
+ctx.arc(pulp1_1[0],pulp1_1[1],pulp1_1[2],pulp1_1[3],pulp1_1[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(pulp2_1[0],pulp2_1[1],pulp2_1[2],pulp2_1[3],pulp2_1[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(pulp3_1[0],pulp3_1[1],pulp3_1[2],pulp3_1[3],pulp3_1[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(pulp4_1[0],pulp4_1[1],pulp4_1[2],pulp4_1[3],pulp4_1[4]);
+ctx.fill();
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(proc_s300_1[0],proc_s300_1[1],proc_s300_1[2],proc_s300_1[3],proc_s300_1[4]);
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(proc_s70_1[0],proc_s70_1[1],proc_s70_1[2],proc_s70_1[3],proc_s70_1[4]);
+ctx.fill();
+ctx.stroke();
+
+ctx.strokeRect(s_rect_2[0],s_rect_2[1],s_rect_2[2],s_rect_2[3]);
+ctx.strokeRect(s_rect_3[0],s_rect_3[1],s_rect_3[2],s_rect_3[3]);
+ctx.fillStyle='black';
+ctx.fillRect(s_cuad1[0],s_cuad1[1],s_cuad1[2],s_cuad1[3]);
+ctx.fillRect(s_cuad2[0],s_cuad2[1],s_cuad2[2],s_cuad2[3]);
+ctx.strokeRect(elev1[0],elev1[1],elev1[2],elev1[3]);
+ctx.strokeRect(elev2[0],elev2[1],elev2[2],elev2[3]);
+ctx.strokeRect(elev3[0],elev3[1],elev3[2],elev3[3]);
+ctx.strokeRect(elev4[0],elev4[1],elev4[2],elev4[3]);
+ctx.strokeRect(pulp1_c1[0],pulp1_c1[1],pulp1_c1[2],pulp1_c1[3]);
+ctx.strokeRect(pulp1_c2[0],pulp1_c2[1],pulp1_c2[2],pulp1_c2[3]);
+ctx.strokeRect(pulp1_c3[0],pulp1_c3[1],pulp1_c3[2],pulp1_c3[3]);
+ctx.strokeRect(pulp1_c4[0],pulp1_c4[1],pulp1_c4[2],pulp1_c4[3]);
+ctx.strokeRect(pulp1_c5[0],pulp1_c5[1],pulp1_c5[2],pulp1_c5[3]);
+ctx.strokeRect(pulp2_c1[0],pulp2_c1[1],pulp2_c1[2],pulp2_c1[3]);
+ctx.strokeRect(pulp2_c2[0],pulp2_c2[1],pulp2_c2[2],pulp2_c2[3]);
+ctx.strokeRect(pulp2_c3[0],pulp2_c3[1],pulp2_c3[2],pulp2_c3[3]);
+ctx.strokeRect(pulp2_c4[0],pulp2_c4[1],pulp2_c4[2],pulp2_c4[3]);
+ctx.strokeRect(pulp2_c5[0],pulp2_c5[1],pulp2_c5[2],pulp2_c5[3]);
+ctx.strokeRect(pulp3_c1[0],pulp3_c1[1],pulp3_c1[2],pulp3_c1[3]);
+ctx.strokeRect(pulp3_c2[0],pulp3_c2[1],pulp3_c2[2],pulp3_c2[3]);
+ctx.strokeRect(pulp3_c3[0],pulp3_c3[1],pulp3_c3[2],pulp3_c3[3]);
+ctx.strokeRect(pulp3_c4[0],pulp3_c4[1],pulp3_c4[2],pulp3_c4[3]);
+ctx.strokeRect(pulp3_c5[0],pulp3_c5[1],pulp3_c5[2],pulp3_c5[3]);
+ctx.strokeRect(pulp4_c1[0],pulp4_c1[1],pulp4_c1[2],pulp4_c1[3]);
+ctx.strokeRect(pulp4_c2[0],pulp4_c2[1],pulp4_c2[2],pulp4_c2[3]);
+ctx.strokeRect(pulp4_c3[0],pulp4_c3[1],pulp4_c3[2],pulp4_c3[3]);
+ctx.strokeRect(pulp4_c4[0],pulp4_c4[1],pulp4_c4[2],pulp4_c4[3]);
+ctx.strokeRect(pulp4_c5[0],pulp4_c5[1],pulp4_c5[2],pulp4_c5[3]);
+
+ctx.strokeStyle='green';
+ctx.strokeRect(pulp1[0],pulp1[1],pulp1[2],pulp1[3]);
+ctx.strokeRect(pulp2[0],pulp2[1],pulp2[2],pulp2[3]);
+ctx.strokeRect(pulp3[0],pulp3[1],pulp3[2],pulp3[3]);
+ctx.strokeRect(pulp4[0],pulp4[1],pulp4[2],pulp4[3]);
+
+ctx.font="30px Arial";
+ctx.fillStyle='black';
+ctx.fillText("Ferr", 425, 40);
+ctx.fillText("R1", 130, 200);
+ctx.fillText("R2", 615, 200);
+ctx.fillText("Cam 1", 325, 193);
+ctx.fillText("Cam 2", 823, 193);
+ctx.fillText("C3P", 381, 312);
+ctx.fillText("REP", 492, 312);
+ctx.fillText("1", 15, 338);
+ctx.fillText("2", 178, 338);
+ctx.fillText("3", 339, 338);
+ctx.fillText("4", 745, 338);
+
+ctx.fillText("1", 90, 385);
+ctx.fillText("2", 258, 385);
+ctx.fillText("3", 416, 385);
+ctx.fillText("4", 823, 385);
+ctx.fillText("Seca", 587, 390);
+ctx.fillText("Smil", 106, 704);
+ctx.fillText("Sco", 184, 665);
+ctx.fillText("4", 205, 715);
+ctx.fillText("3", 264, 715);
+ctx.fillText("2", 327, 715);
+ctx.fillText("1", 385, 715);
+ctx.fillText("Br 1", 190, 807);
+ctx.fillText("Br 2", 190, 921);
+ctx.fillText("Br 3", 190, 1034);
+ctx.fillText("Br 4", 190, 1143);
+ctx.fillText("Br 5", 190, 1257);
+ctx.fillText("S1", 550, 745);
+ctx.fillText("S2", 550, 918);
+ctx.fillText("S3", 550, 1091);
+ctx.fillText("S4", 550, 1264);
+ctx.font="25px Arial";
+ctx.fillText("5", 653, 746);
+ctx.fillText("6", 653, 919);
+ctx.fillText("7", 653, 1092);
+ctx.fillText("9", 653, 662);
+ctx.fillText("12", 297, 769);
+ctx.fillText("10", 845, 630);
+ctx.fillText("11", 906, 630);
+
+ctx.font="22px Arial";
+ctx.fillText("Proc", 788, 710);
+ctx.fillText("S300", 788, 740);
+ctx.fillText("S70", 875, 740);
+ctx.fillText("S20", 930, 740);
+ctx.scale(1/escala_general,1/escala_general);
+}
+
+</script>
+
+<body  >
+<canvas id="mycanvas" width="1663" height="2100" >
+
+</body>
+</html>
+
+
+
+
+
+
